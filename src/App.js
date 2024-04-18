@@ -1,9 +1,14 @@
 import './App.css';
+import { Navbar, NavbarBrand } from 'reactstrap';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <Navbar dark color="primary">
+        <div className="container">
+          <NavbarBrand href="/">VNN Chat</NavbarBrand>
+        </div>
+      </Navbar>
     </div>
   );
 }
