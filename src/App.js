@@ -66,7 +66,7 @@ function SignOut (){
 function ChatRoom (){ 
   const dummy = useRef();
   const messageRef = firestore.collection('messages');
-  const query = messageRef.orderBy('createdAt').limit(25);
+  const query = messageRef.orderBy('createdAt').limit(10000);
 
   const  [messages] = useCollectionData(query, { idField: 'id' });
 
@@ -84,53 +84,43 @@ function ChatRoom (){
       const content = response.data
       const data = "Bot: " + content[0]["Content"].split("answer:")[1];
       console.log("Before setting value: ", formValue)
-      sendMessage(data)
-      //botmessage(data);
-    })
-  }
-
-  const botmessage = async(data) => {
-    
-    setFormValue(data);
-    console.log("After setting value: ", data)
-    const { uid, photoURL } = auth.currentUser;
-    await messageRef.add({
+      const { uid, photoURL } = auth.currentUser;
+      await messageRef.add({
       text: data,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
-      photoURL
+      photoURL:"https://pipedream.com/s.v0/app_OQYhyP/logo/orig"
+    })
     })
   }
 
-  const sendMessage = async(e,data) => {
-    
-
+  const sendMessage = async(e) => {
+    e.preventDefault();
     const { uid, photoURL } = auth.currentUser;
 
     if (formValue.substring(0,4) !== "Bot: "){
-      e.preventDefault();
+      
       await messageRef.add({
         text: formValue,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid,
         photoURL
-      })
-
-      .then(function (response) {
+      }).then(function (response) {
         Quest(formValue)
+        console.log(messages)
       })  
     }
-    if (data.substring(0,4) === "Bot: "){
-      await messageRef.add({
-        text: data,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        uid,
-        photoURL
-      })
-    }
+    // if (formValue.substring(0,4) === "Bot: "){
+    //   await messageRef.add({
+    //     text: formValue,
+    //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //     uid,
+    //     photoURL
+    //   })
+    // }
 
 
-    //setFormValue('');
+    setFormValue('');
     dummy.current.scrollIntoView({ behaviour: 'smooth'});
   }
 
@@ -149,19 +139,26 @@ function ChatRoom (){
 }
 
 function ChatMessage (props){
-  const {text, uid, photoURL} = props.message;
-  
+  let {text, uid, photoURL} = props.message;
+
   function messageClass (){
-  if (text.substring(0,4) !== "Bot: "){
-    return uid === auth.currentUser.uid ? 'sent' : 'received';  }
-  else{
-    return 'received';
-  }
+    if(text.includes("Bot:")){
+      console.log("received");
+      text=text.split("Bot:")[1];
+      return 'received';
+    }
+    
+    else{
+      console.log('sent')
+      return uid === auth.currentUser.uid ? 'sent' : 'received';  
+    }
+    
+  
   }
 
   return(
     <>
-    <div className={`message ${messageClass}`}>
+    <div className={`message ${messageClass()}`}>
       <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt=" " />
       <p>{text}</p>
     </div>
