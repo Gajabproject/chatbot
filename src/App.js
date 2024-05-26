@@ -66,7 +66,7 @@ function SignOut (){
 function ChatRoom (){ 
   const dummy = useRef();
   const messageRef = firestore.collection('messages');
-  const query = messageRef.orderBy('createdAt').limit(10000);
+  const query = messageRef.orderBy('createdAt','asc').limit(5000);
 
   const  [messages] = useCollectionData(query, { idField: 'id' });
 
@@ -110,16 +110,6 @@ function ChatRoom (){
         console.log(messages)
       })  
     }
-    // if (formValue.substring(0,4) === "Bot: "){
-    //   await messageRef.add({
-    //     text: formValue,
-    //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    //     uid,
-    //     photoURL
-    //   })
-    // }
-
-
     setFormValue('');
     dummy.current.scrollIntoView({ behaviour: 'smooth'});
   }
@@ -141,6 +131,7 @@ function ChatRoom (){
 function ChatMessage (props){
   let {text, uid, photoURL} = props.message;
 
+
   function messageClass (){
     if(text.includes("Bot:")){
       console.log("received");
@@ -153,14 +144,16 @@ function ChatMessage (props){
       return uid === auth.currentUser.uid ? 'sent' : 'received';  
     }
     
-  
+   
   }
+  
 
   return(
     <>
     <div className={`message ${messageClass()}`}>
       <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt=" " />
       <p>{text}</p>
+     
     </div>
     </>
   )

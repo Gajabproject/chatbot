@@ -98,7 +98,11 @@ body {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
+
+  span{
+    height: fit-content;
+   
+  }
   
   .sign-in {
     color: #282c34;
