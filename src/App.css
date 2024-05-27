@@ -7,7 +7,26 @@ body {
     max-width: 728px;
     margin: 0 auto;
   }
+  .load-more {
+    background-color: #61dafb;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: sticky;
+    bottom:85vh;
+    margin: 10px 0;
+  }
   
+  .load-more:hover {
+    background-color: #21a1f1;
+  }
+  
+  .load-more:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
   .App header {
     background-color: #181717;
     height: 10vh;
@@ -82,6 +101,33 @@ body {
     padding: 0 10px;
   }
   
+/* App.css */
+/* App.css */
+.suggestions {
+  display: flex;
+  flex-direction: row;
+  background-color:#1e1e24;
+  font-size: 13px;
+  position: sticky;
+  bottom:80px; /* Adjust this value as needed */
+  left: 0;
+  width: 100%;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ 
+}
+
+.suggestion {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background-color: #282c34;
+}
+
+
+
   button {
     background-color: #282c34; /* Green */
     border: none;
